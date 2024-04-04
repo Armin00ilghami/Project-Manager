@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Hi , Armin !"
+                android:text="Hi , Tina !"
                 android:textColor="@color/dark_purple"
                 android:textSize="28sp" />
 
