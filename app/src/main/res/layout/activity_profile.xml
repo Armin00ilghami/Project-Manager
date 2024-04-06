@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Activity.ProfileActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -161,14 +161,16 @@
                     android:text="Archive"
                     android:textColor="@color/dark_purple"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:layout_marginStart="16dp"/>
 
                 <TextView
                     android:id="@+id/textView19"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="View all"
-                    android:textColor="@color/dark_purple" />
+                    android:textColor="@color/dark_purple"
+                    android:layout_marginEnd="16dp"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -193,14 +195,16 @@
                     android:text="My Team"
                     android:textColor="@color/dark_purple"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginStart="16dp"/>
 
                 <TextView
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="View all"
-                    android:textColor="@color/dark_purple" />
+                    android:textColor="@color/dark_purple"
+                    android:layout_marginEnd="16dp"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -211,5 +215,5 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
