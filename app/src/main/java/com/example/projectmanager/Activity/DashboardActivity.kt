@@ -1,5 +1,6 @@
 package com.example.projectmanager.Activity
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -11,7 +12,6 @@ import com.example.projectmanager.ViewModel.MainViewModel
 import com.example.projectmanager.databinding.ActivityMainBinding
 
 class DashboardActivity : AppCompatActivity() {
-
     lateinit var binding : ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels()
 
@@ -19,6 +19,8 @@ class DashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPreferences = getSharedPreferences( "Login User", Context.MODE_PRIVATE )
 
         binding.apply {
             val ongoingAdapter by lazy { OngoingAdapter(mainViewModel.loadData()) }
