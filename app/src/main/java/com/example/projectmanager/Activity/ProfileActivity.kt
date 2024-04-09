@@ -49,6 +49,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.imageView2.setOnClickListener {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.add(R.id.frame_main_container, FileFragment(path))
+            transaction.addToBackStack(null)
             transaction.commit()
         }
 
