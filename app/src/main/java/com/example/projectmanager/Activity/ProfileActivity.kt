@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmanager.Adapter.ArchiveAdapter
 import com.example.projectmanager.Adapter.MyTeamAdapter
+import com.example.projectmanager.Fragment.FileFragment
 import com.example.projectmanager.R
 import com.example.projectmanager.ViewModel.ProfileViewModel
 import com.example.projectmanager.databinding.ActivityMainBinding
@@ -40,6 +41,15 @@ class ProfileActivity : AppCompatActivity() {
                 )
             }
 
+        }
+
+        val file = getExternalFilesDir(null)!!
+        val path = file.path
+
+        binding.imageView2.setOnClickListener {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.add(R.id.frame_main_container, FileFragment(path))
+            transaction.commit()
         }
 
     }
