@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
+        app:helperText="with suffix .txt .png etc.."
         android:hint="enter new file name ..."
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_marginTop="12dp"

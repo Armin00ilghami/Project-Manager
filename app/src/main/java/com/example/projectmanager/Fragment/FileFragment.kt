@@ -14,6 +14,7 @@ import com.example.projectmanager.R
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmanager.Adapter.FileAdapter
+import com.example.projectmanager.databinding.DialogAddFileBinding
 import com.example.projectmanager.databinding.DialogAddFolderBinding
 import com.example.projectmanager.databinding.FragmentFileBinding
 import java.io.File
@@ -59,11 +60,11 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
         }
 
         binding.btnAddFolder.setOnClickListener {
-            creatNewFolder()
+            createNewFolder()
         }
 
         binding.btnAddFile.setOnClickListener {
-            creatNewFile()
+            createNewFile()
         }
 
     }
@@ -99,11 +100,35 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
 
     }
 
-    private fun creatNewFile() {
+    private fun createNewFile() {
 
+        val dialog = AlertDialog.Builder(requireContext()).create()
+
+        val addFileBinding = DialogAddFileBinding.inflate(layoutInflater)
+        dialog.setView( addFileBinding.root )
+        dialog.show()
+
+        addFileBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        addFileBinding.btnCreate.setOnClickListener {
+            val nameOfNewFolder = addFileBinding.edtAddFolder.text.toString()
+
+            val newFile = File( path + File.separator + nameOfNewFolder )
+            if ( !newFile.exists() ){
+                if ( newFile.createNewFile() ){
+                    adapter.addNewFile( newFile )
+                    binding.recyclerMain.scrollToPosition( 0 )
+
+                    binding.recyclerMain.visibility = View.VISIBLE
+                    binding.imgNoData.visibility = View.GONE
+                }
+            }
+            dialog.dismiss()
+        }
     }
 
-    private fun creatNewFolder() {
+    private fun createNewFolder() {
 
         val dialog = AlertDialog.Builder(requireContext()).create()
 
