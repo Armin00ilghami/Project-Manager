@@ -77,6 +77,12 @@ class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):Recycl
         return name.contains(".zip") || name.contains(".rar")
     }
 
+    fun addNewFile( newFile : File ){
+
+        data.add( 0, newFile )
+        notifyItemInserted( 0 )
+
+    }
     interface FileEvent{
         fun onFileClicked( file : File , type : String )
         fun onFolderClicked( path : String )

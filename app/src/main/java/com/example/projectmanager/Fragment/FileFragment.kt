@@ -8,16 +8,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import com.example.projectmanager.R
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmanager.Adapter.FileAdapter
+import com.example.projectmanager.databinding.DialogAddFolderBinding
 import com.example.projectmanager.databinding.FragmentFileBinding
 import java.io.File
 
 class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
    lateinit var binding : FragmentFileBinding
+   lateinit var adapter : FileAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentFileBinding.inflate(layoutInflater)
@@ -30,20 +33,21 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
 
         val ourFile = File(path)
         binding.txtPath.text = ourFile.name + ">"
+
         if (ourFile.isDirectory){
 
             val listOfFiles = arrayListOf<File>()
             listOfFiles.addAll( ourFile.listFiles()!! )
             listOfFiles.sort()
 
+            adapter = FileAdapter( listOfFiles , this )
+            binding.recyclerMain.adapter = adapter
+            binding.recyclerMain.layoutManager = LinearLayoutManager( context )
+
             if ( listOfFiles.size > 0 ) {
 
                 binding.recyclerMain.visibility = View.VISIBLE
                 binding.imgNoData.visibility = View.GONE
-
-                val myAdapter = FileAdapter( listOfFiles , this )
-                binding.recyclerMain.adapter = myAdapter
-                binding.recyclerMain.layoutManager = LinearLayoutManager( context )
 
             } else {
 
@@ -52,6 +56,14 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
 
             }
 
+        }
+
+        binding.btnAddFolder.setOnClickListener {
+            creatNewFolder()
+        }
+
+        binding.btnAddFile.setOnClickListener {
+            creatNewFile()
         }
 
     }
@@ -87,5 +99,37 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
 
     }
 
+    private fun creatNewFile() {
+
+    }
+
+    private fun creatNewFolder() {
+
+        val dialog = AlertDialog.Builder(requireContext()).create()
+
+        val addFolderBinding = DialogAddFolderBinding.inflate(layoutInflater)
+        dialog.setView( addFolderBinding.root )
+        dialog.show()
+
+        addFolderBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        addFolderBinding.btnCreate.setOnClickListener {
+            val nameOfNewFolder = addFolderBinding.edtAddFolder.text.toString()
+
+            val newFile = File( path + File.separator + nameOfNewFolder )
+            if ( !newFile.exists() ){
+                if ( newFile.mkdir() ){
+                    adapter.addNewFile( newFile )
+                    binding.recyclerMain.scrollToPosition( 0 )
+
+                    binding.recyclerMain.visibility = View.VISIBLE
+                    binding.imgNoData.visibility = View.GONE
+                }
+            }
+            dialog.dismiss()
+        }
+
+    }
 
 }
