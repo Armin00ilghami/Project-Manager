@@ -48,6 +48,11 @@ class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):Recycl
                     fileEvent.onFileClicked( file , fileType )
                 }
             }
+
+            itemView.setOnLongClickListener {
+                fileEvent.onLongClicked( file , adapterPosition )
+                true
+            }
         }
     }
 
@@ -56,11 +61,9 @@ class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):Recycl
         binding = ItemFileLinearBinding.inflate( layoutInflater , parent , false )
         return FileViewHolder( binding.root )
     }
-
     override fun getItemCount(): Int {
         return data.size
     }
-
     override fun onBindViewHolder(holder: FileViewHolder, position: Int) {
         holder.bindViews( data[position] )
     }
@@ -83,9 +86,14 @@ class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):Recycl
         notifyItemInserted( 0 )
 
     }
+    fun removeFile( oldFile : File , position: Int ){
+        data.remove( oldFile )
+        notifyItemRemoved( position )
+    }
     interface FileEvent{
         fun onFileClicked( file : File , type : String )
         fun onFolderClicked( path : String )
+        fun onLongClicked( file:File , position: Int )
     }
 
 }

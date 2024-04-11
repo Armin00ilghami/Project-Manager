@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmanager.Adapter.FileAdapter
 import com.example.projectmanager.databinding.DialogAddFileBinding
 import com.example.projectmanager.databinding.DialogAddFolderBinding
+import com.example.projectmanager.databinding.DialogDeleteItemBinding
 import com.example.projectmanager.databinding.FragmentFileBinding
 import java.io.File
 
@@ -97,6 +98,27 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
         transaction.replace( R.id.frame_main_container , FileFragment( path ) )
         transaction.addToBackStack(null)
         transaction.commit()
+
+    }
+
+    override fun onLongClicked(file: File, position:Int) {
+        val dialogDeleteBinding = DialogDeleteItemBinding.inflate( layoutInflater )
+
+        val dialog = AlertDialog.Builder( requireContext() ).create()
+        dialog.setView( dialogDeleteBinding.root )
+        dialog.show()
+
+        dialogDeleteBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialogDeleteBinding.btnCreate.setOnClickListener {
+            if ( file.exists() ){
+                if(file.deleteRecursively()){
+                    adapter.removeFile( file , position )
+                }
+            }
+            dialog.dismiss()
+        }
 
     }
 
