@@ -15,6 +15,12 @@ import com.example.projectmanager.databinding.ActivityProfileBinding
 class ProfileActivity : AppCompatActivity() {
     lateinit var binding: ActivityProfileBinding
     val profileViewModel: ProfileViewModel by viewModels()
+
+    companion object {
+        var ourViewType = 0  //linear view type (default)
+        var ourSpanCount = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)

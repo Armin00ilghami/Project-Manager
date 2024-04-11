@@ -31,5 +31,9 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
 
+        binding.lineaProfile.setOnClickListener {
+            // click profile icon and go profile activity
+        }
+
     }
 }

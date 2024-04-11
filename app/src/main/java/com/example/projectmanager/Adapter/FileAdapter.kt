@@ -3,40 +3,45 @@ package com.example.projectmanager.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.example.projectmanager.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmanager.databinding.ItemFileLinearBinding
 import java.io.File
 import java.net.URLConnection
 
-class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):RecyclerView.Adapter<FileAdapter.FileViewHolder>(){
-    lateinit var binding : ItemFileLinearBinding
+class FileAdapter ( private val data:ArrayList<File> , private val fileEvent: FileEvent ):RecyclerView.Adapter<FileAdapter.FileViewHolder>(){
+    private var ourViewType = 0
 
     inner class FileViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){
 
+        val txt = itemView.findViewById<TextView>( R.id.textView )
+        val img = itemView.findViewById<ImageView>( R.id.imageView )
+
         fun bindViews(file:File){
             var fileType = ""
-            binding.textView.text = file.name
+            txt.text = file.name
 
             if ( file.isDirectory ){
-                binding.imageView.setImageResource( R.drawable.ic_folder)
+                img.setImageResource( R.drawable.ic_folder)
             } else{
 
                 when {
                     isImage( file.path ) -> {
-                        binding.imageView.setImageResource( R.drawable.ic_image )
+                        img.setImageResource( R.drawable.ic_image )
                         fileType = "image/*"
                     }
                     isVideo( file.path ) -> {
-                        binding.imageView.setImageResource( R.drawable.ic_video )
+                        img.setImageResource( R.drawable.ic_video )
                         fileType = "video/*"
                     }
                     isZip( file.path ) -> {
-                        binding.imageView.setImageResource( R.drawable.ic_zip )
+                        img.setImageResource( R.drawable.ic_zip )
                         fileType = "application/zip"
                     }
                     else -> {
-                        binding.imageView.setImageResource( R.drawable.ic_file )
+                        img.setImageResource( R.drawable.ic_file )
                         fileType = "text/plain"
                     }
                 }
@@ -57,9 +62,15 @@ class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):Recycl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileViewHolder {
-        val layoutInflater = LayoutInflater.from( parent.context )
-        binding = ItemFileLinearBinding.inflate( layoutInflater , parent , false )
-        return FileViewHolder( binding.root )
+
+        val view : View
+
+        if ( viewType == 0 ){
+            view = LayoutInflater.from( parent.context ).inflate( R.layout.item_file_linear , parent , false )
+        } else {
+            view = LayoutInflater.from( parent.context ).inflate( R.layout.item_file_grid , parent , false )
+        }
+        return FileViewHolder( view )
     }
     override fun getItemCount(): Int {
         return data.size
@@ -67,16 +78,19 @@ class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):Recycl
     override fun onBindViewHolder(holder: FileViewHolder, position: Int) {
         holder.bindViews( data[position] )
     }
+    override fun getItemViewType(position: Int): Int {
+        return ourViewType
+    }
 
-    fun isImage(path: String): Boolean {
+    private fun isImage(path: String): Boolean {
         val mimeType: String = URLConnection.guessContentTypeFromName(path)
         return mimeType.startsWith("image")
     }
-    fun isVideo(path: String): Boolean {
+    private fun isVideo(path: String): Boolean {
         val mimeType = URLConnection.guessContentTypeFromName(path)
         return mimeType.startsWith("video")
     }
-    fun isZip(name: String): Boolean {
+    private fun isZip(name: String): Boolean {
         return name.contains(".zip") || name.contains(".rar")
     }
 
@@ -90,6 +104,11 @@ class FileAdapter ( val data:ArrayList<File> , val fileEvent: FileEvent ):Recycl
         data.remove( oldFile )
         notifyItemRemoved( position )
     }
+    fun changeViewType( newViewType : Int ){
+        ourViewType = newViewType
+        notifyDataSetChanged()
+    }
+
     interface FileEvent{
         fun onFileClicked( file : File , type : String )
         fun onFolderClicked( path : String )

@@ -12,7 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import com.example.projectmanager.R
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.projectmanager.Activity.ProfileActivity
 import com.example.projectmanager.Adapter.FileAdapter
 import com.example.projectmanager.databinding.DialogAddFileBinding
 import com.example.projectmanager.databinding.DialogAddFolderBinding
@@ -33,6 +35,12 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if ( ProfileActivity.ourViewType == 0 ){
+            binding.btnShowType.setImageResource( R.drawable.ic_grid )
+        } else {
+            binding.btnShowType.setImageResource( R.drawable.ic_list )
+        }
+
         val ourFile = File(path)
         binding.txtPath.text = ourFile.name + ">"
 
@@ -44,7 +52,8 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
 
             adapter = FileAdapter( listOfFiles , this )
             binding.recyclerMain.adapter = adapter
-            binding.recyclerMain.layoutManager = LinearLayoutManager( context )
+            binding.recyclerMain.layoutManager = GridLayoutManager( context , ProfileActivity.ourSpanCount , LinearLayoutManager.VERTICAL , false )
+            adapter.changeViewType( ProfileActivity.ourViewType )
 
             if ( listOfFiles.size > 0 ) {
 
@@ -66,6 +75,30 @@ class FileFragment (val path : String): Fragment() , FileAdapter.FileEvent {
 
         binding.btnAddFile.setOnClickListener {
             createNewFile()
+        }
+
+        binding.btnShowType.setOnClickListener {
+
+            if ( ProfileActivity.ourViewType == 0 ){
+
+                ProfileActivity.ourViewType = 1
+                ProfileActivity.ourSpanCount = 3
+                adapter.changeViewType( ProfileActivity.ourViewType )
+                binding.recyclerMain.layoutManager = GridLayoutManager( context , ProfileActivity.ourSpanCount )
+
+                binding.btnShowType.setImageResource( R.drawable.ic_list )
+
+            } else if ( ProfileActivity.ourViewType == 1 ){
+
+                ProfileActivity.ourViewType = 0
+                ProfileActivity.ourSpanCount = 1
+                adapter.changeViewType( ProfileActivity.ourViewType )
+                binding.recyclerMain.layoutManager = GridLayoutManager( context , ProfileActivity.ourSpanCount )
+
+                binding.btnShowType.setImageResource( R.drawable.ic_grid )
+
+            }
+
         }
 
     }
