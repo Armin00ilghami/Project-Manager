@@ -1,6 +1,7 @@
 package com.example.projectmanager.Activity
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -32,7 +33,10 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.lineaProfile.setOnClickListener {
-            // click profile icon and go profile activity
+
+            val intent = Intent( this@DashboardActivity , ProfileActivity::class.java )
+            startActivity( intent )
+
         }
 
     }

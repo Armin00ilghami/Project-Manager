@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Hi , Tina !"
+                android:text="Hi , Aylin !"
                 android:textColor="@color/dark_purple"
                 android:textSize="28sp" />
 
@@ -246,6 +246,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="true"
                     android:id="@+id/lineaProfile"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
