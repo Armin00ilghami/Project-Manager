@@ -1,4 +1,4 @@
-package com.example.projectmanager.Repository
+package com.example.projectmanager.model.Repository
 
 import com.example.projectmanager.Domain.TeamDomain
 

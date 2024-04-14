@@ -1,7 +1,7 @@
 package com.example.projectmanager.ViewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.projectmanager.Repository.ProfileRepository
+import com.example.projectmanager.model.Repository.ProfileRepository
 
 class ProfileViewModel(val repository: ProfileRepository):ViewModel() {
 
