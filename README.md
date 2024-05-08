@@ -11,6 +11,7 @@ Items used in the project:
 * databinding
 * File System
 * Data Store
+* Material Components
 
   
 I had experience working with these, but later it was removed from the project due to defects and bugs :\
